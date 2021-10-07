@@ -8,19 +8,19 @@
 
 
 /*
-	AsynchronousTaskManager::TaskManager::Task have some methods that are pure virtual.
+	Task have some methods that are pure virtual.
 */
 
-class AsynchronousTaskManager::TaskManager::Task
+class Task
 {
 	public:
-		enum {paused, running, stopped, completed} TaskStatus;
+		enum TaskStatus {paused, running, stopped, completed};
 
-		// Do not allow constructors or destructors.
-		Task() = delete;
-		Task(std::string& process) = delete;
-		~Task() = delete;
-		
+
+		// I think I need to declare desctructor virtual if I want the vtable to point to derived class default destructors
+		virtual ~Task();
+		Task(); // Constructor will be called from derived classes
+
 		/*
 			Simply use the constructor to start the Task. There is therefore no start method
 			virtual start(std::string& process) = 0;
@@ -30,9 +30,10 @@ class AsynchronousTaskManager::TaskManager::Task
 		virtual void pause();
 		virtual void resume();
 		virtual void stop();
+		virtual void status();
 
 	protected:		
-		static unsigned long _currentTaskID = 0; // This thing will be shared among derived class
+		static unsigned long _currentTaskID; // This thing will be shared among derived class
 		TaskStatus _status;
 		const unsigned long _taskID;
 

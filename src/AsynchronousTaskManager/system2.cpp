@@ -8,14 +8,19 @@
 */
 
 #include "system2.h"
-#include "sys/stat.h"
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 
-pid_t system2(const char * command)
+PID_t system2(const char * command)
 {
+    
     int p_stdin[2];
     int p_stdout[2];
-    pid_t pid;
+    PID_t pid;
 
     if (pipe(p_stdin) == -1)
         return -1;
@@ -51,20 +56,6 @@ pid_t system2(const char * command)
 
     close(p_stdin[0]);
     close(p_stdout[1]);
-
-    /*
-    if (infp == NULL) {
-        close(p_stdin[1]);
-    } else {
-        *infp = p_stdin[1];
-    }
-
-    if (outfp == NULL) {
-        close(p_stdout[0]);
-    } else {
-        *outfp = p_stdout[0];
-    }
-    */
 
     return pid;
 }

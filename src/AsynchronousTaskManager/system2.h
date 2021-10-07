@@ -3,6 +3,6 @@
 
 #include "typeDefinitions.h"
 
-pid_t system2(const char * command);
+PID_t system2(const char * command);
 
 #endif /* SYSTEM2_H */
