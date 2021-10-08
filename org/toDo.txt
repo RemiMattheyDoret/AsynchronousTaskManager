@@ -33,3 +33,11 @@ Improve logo
 Take tokens directly from std::cin rather than making a string and back a istringstream
 
 Better naming between get and print functions
+
+Might be possible to replace ProcessController by a std::promise. Also rename 'ProcessController' into 'CPPTaskController'
+
+Always flush messages
+
+Allow multiple taskName for pause, stop, resume and status
+
+Test whether COmmand+C lead to deamons
