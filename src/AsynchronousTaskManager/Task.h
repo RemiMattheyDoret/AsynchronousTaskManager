@@ -14,7 +14,8 @@
 class Task
 {
 	public:
-		enum TaskStatus {paused, running, stopped, completed};
+		enum TaskStatus {paused=0, running=1, stopped=2, completed=3};
+
 
 
 		// I think I need to declare desctructor virtual if I want the vtable to point to derived class default destructors
@@ -36,6 +37,7 @@ class Task
 		static unsigned long _currentTaskID; // This thing will be shared among derived class
 		TaskStatus _status;
 		const unsigned long _taskID;
+		static const std::array<std::string,4> _TaskStatusNames;
 
 		std::mutex _mu;
 		std::unique_lock<std::mutex> lock();

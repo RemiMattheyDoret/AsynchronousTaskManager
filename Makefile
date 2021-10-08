@@ -5,7 +5,7 @@ CFLAGS := -std=gnu++11 -O0 -Wall -fmax-errors=5
 
 ### target and objects
 target := callAsynchronousTaskManager
-objs := src/main.o src/AsynchronousTaskManager/AsynchronousTaskManager.o src/AsynchronousTaskManager/Task.o src/AsynchronousTaskManager/Command.o src/AsynchronousTaskManager/TaskManager.o src/AsynchronousTaskManager/TaskCPP.o src/AsynchronousTaskManager/TaskSHELL.o src/AsynchronousTaskManager/PredefinedTasks.o src/AsynchronousTaskManager/system2.o src/AsynchronousTaskManager/ProcessController.o src/AsynchronousTaskManager/typeDefinitions.o
+objs := src/main.o src/AsynchronousTaskManager/AsynchronousTaskManager.o src/AsynchronousTaskManager/Task.o src/AsynchronousTaskManager/TaskManager.o src/AsynchronousTaskManager/TaskCPP.o src/AsynchronousTaskManager/TaskSHELL.o src/AsynchronousTaskManager/PredefinedTasks.o src/AsynchronousTaskManager/system2.o src/AsynchronousTaskManager/ProcessController.o
 
 ### Dependencies
 # gcc -c main.c --MMD -MF main.d
@@ -18,13 +18,19 @@ objs := src/main.o src/AsynchronousTaskManager/AsynchronousTaskManager.o src/Asy
 # $^: replace names of all prerequisite
 
 
-all: $(target)
+#all: $(target)
 
-callAsynchronousTaskManager: $(objs)
-	$(CC) $(CFLAGS) $^ -o $@ 
+$(target): $(objs)
+	$(CC) $(CFLAGS) $^ -o bin/$@ 
+
+#src/main.o: src/main.cpp:
+	#$(CC) $(CFLAGS) -c main.cpp
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $< -o $@
+
+test: 
+	$(CC) $(CFLAGS) src/main_tests.cpp -o bin/tests
 
 clean: 
-	rm *.o $(target)
+	rm src/*.o src/AsynchronousTaskManager/*.o $(target)

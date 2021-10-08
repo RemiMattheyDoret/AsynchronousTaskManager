@@ -9,8 +9,8 @@
 class TaskManager
 {
 public:
-	void startSHELL(std::string& process);
-	void startCPP(std::string& functionName);
+	void startSHELL(std::string& process, std::string& taskName);
+	void startCPP(std::string& functionName, std::string& taskName);
 	void pause(taskID_t taskID);
 	void pause(std::string& taskName);
 	void resume(taskID_t taskID);

@@ -1,7 +1,7 @@
 #ifndef SYSTEM2_H
 #define SYSTEM2_H
 
-#include "typeDefinitions.h"
+#include "TypeDefinitions.h"
 
 PID_t system2(const char * command);
 

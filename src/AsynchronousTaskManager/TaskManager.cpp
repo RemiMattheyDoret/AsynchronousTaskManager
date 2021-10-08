@@ -36,13 +36,17 @@ taskID_t TaskManager::findTaskIDFromName(std::string& taskName)
 	return taskID; // return taskID
 }
 
-void TaskManager::startSHELL(std::string& process)
+void TaskManager::startSHELL(std::string& process, std::string& taskName)
 {
+	std::cout << "RUN void TaskManager::startSHELL(std::string& process)\n";
+	NamesIDsmap[taskName] = tasks.size();
 	tasks.push_back(new TaskSHELL(process));
 }
 
-void TaskManager::startCPP(std::string& process)
+void TaskManager::startCPP(std::string& process, std::string& taskName)
 {
+	std::cout << "RUN void TaskManager::startCPP(std::string& process)\n";
+	NamesIDsmap[taskName] = tasks.size();
 	tasks.push_back(new TaskCPP(process));
 }
 
