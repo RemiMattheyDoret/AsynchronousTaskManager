@@ -1,26 +1,4 @@
-Nice try catch and along with Exception class
-
-Nice display of messages. Maybe a printer class
-
-Nice inputReader iterator
-
-Decide whether AsynchronousTaskManager should be a namespace, a funktor or what.
-
-Allocate ressources and measure ressources of tasks.
-
-Developt the 'outputWriter' class or namespace
-
-improve Command object. Maybe with polymorphism
-
-Ensure start returns the taskID and not only print it... maybe. Dunno.
-
-Ensure process is not duplicated or kept around for nothing.
-
-Put underscores everywhere when needed.
-
-Improve makefile
-
-Add progress to TaskCPP
+*** important ***
 
 Add README
 
@@ -28,18 +6,42 @@ Ensure it compiles on UBELIX
 
 Write Gooogletest
 
-Improve logo
+Really think of having a library that can be usedd by ane xtenral user. The big while loop should be in main. AsynchronousTaskManager, should have a 'submit' method reading the input. The logo should be in printLogo and also printVersion.
 
-Take tokens directly from std::cin rather than making a string and back a istringstream
+Explicitely delete copy assignment and copy construct of AsynchronousTaskManager.
 
-Better naming between get and print functions
+rename 'AsynchronousTaskManager' to 'AsynchronousTaskManagerAPI'. Have TaskManager takes a Command
 
-Might be possible to replace ProcessController by a std::promise. Also rename 'ProcessController' into 'CPPTaskController'
-
-Always flush messages
-
-Allow multiple taskName for pause, stop, resume and status
-
-Test whether COmmand+C lead to deamons
+return status do not just print it.
 
 Ensure we can call executable form CLI with --version and --help
+
+Debug
+
+reread instructions from Pierrangelo
+
+README, UML diagram, and explainations
+
+Watch for possibility for user to instantiate a class like Task. Might better have a private constructor andd friend ATM (or be nested private in ATM).
+
+
+
+
+
+
+
+*** Not important ***
+
+Allow too referr to tasks with task_ID but then I must rerturn that ID at the 'start' command
+
+Allocate ressources and measure ressources of tasks.
+
+Ensure start returns the taskID and not only print it... maybe. Dunno.
+
+Ensure process is not duplicated or kept around for nothing.
+
+Improve makefile
+
+Add progress to TaskCPP
+
+

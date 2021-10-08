@@ -1,7 +1,7 @@
 
 ### Compiler and Flags
 CC := g++
-CFLAGS := -std=gnu++17 -O0 -Wall -fmax-errors=5
+CFLAGS := -std=c++17 -O0 -Wall -fmax-errors=5
 
 ### target and objects
 target := callAsynchronousTaskManager

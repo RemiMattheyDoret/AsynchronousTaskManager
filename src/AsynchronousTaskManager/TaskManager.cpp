@@ -7,17 +7,27 @@
 #include <iostream>
 
 
-
-TaskManager::~TaskManager()
+void TaskManager::killAllTasks()
 {
-	// Delete all tasks
+	// Kill all tasks
 	for (auto& task : tasks)
 	{
 		delete task;
 	}
+
+	// empty task vector
+	std::vector<Task*>().swap(tasks);
+
+	// Empty hash map
+	std::unordered_map<std::string, taskID_t>().swap(NamesIDsmap);
 }
 
-taskID_t TaskManager::findTaskIDFromName(std::string& taskName)
+TaskManager::~TaskManager()
+{
+	killAllTasks();
+}
+
+taskID_t TaskManager::findTaskIDFromName(const std::string& taskName) const 
 {
 	const auto it = NamesIDsmap.find(taskName);
 	if (it == NamesIDsmap.end())
@@ -36,10 +46,10 @@ taskID_t TaskManager::findTaskIDFromName(std::string& taskName)
 	return taskID; // return taskID
 }
 
-void TaskManager::addTaskToMap(std::string& taskName)
+void TaskManager::addTaskToMap(const std::string& taskName)
 {
 	if (NamesIDsmap.size() > 0 && NamesIDsmap.find(taskName) == NamesIDsmap.end())
-		throw "Attempt to create a process with an already existing name. All processes must have unique names.\n";
+		throw std::string("Attempt to create a process with an already existing name. All processes must have unique names.\n");
 	else
 		NamesIDsmap[taskName] = tasks.size();
 		
@@ -93,19 +103,19 @@ void TaskManager::stop(std::string& taskName)
 	stop(findTaskIDFromName(taskName));
 }
 
-void TaskManager::status(taskID_t taskID)
+int TaskManager::status(taskID_t taskID)
 {
 	checkTaskID(taskID);
-	tasks[taskID]->status();
+	return tasks[taskID]->status();
 }
 
-void TaskManager::status(std::string& taskName)
+int TaskManager::status(std::string& taskName)
 {
-	status(findTaskIDFromName(taskName));
+	return status(findTaskIDFromName(taskName));
 }
 
 
-void TaskManager::checkTaskID(taskID_t& taskID)
+void TaskManager::checkTaskID(const taskID_t& taskID) const
 {
 	if (taskID >= (taskID_t)tasks.size())
 		throw std::string("taskID ") + std::to_string(taskID) + std::string(" is unknown\n");

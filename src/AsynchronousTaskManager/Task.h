@@ -31,7 +31,7 @@ class Task
 		virtual void pause();
 		virtual void resume();
 		virtual void stop();
-		virtual void status();
+		virtual int status();
 
 	protected:		
 		static unsigned long _currentTaskID; // This thing will be shared among derived class

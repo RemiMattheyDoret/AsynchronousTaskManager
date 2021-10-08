@@ -17,8 +17,9 @@ public:
 	void resume(std::string& taskName);
 	void stop(taskID_t taskID);
 	void stop(std::string& taskName);
-	void status(taskID_t taskID);
-	void status(std::string& taskName);
+	int status(taskID_t taskID);
+	int status(std::string& taskName);
+	void killAllTasks();
 	~TaskManager();
 
 private:	
@@ -28,9 +29,9 @@ private:
 	std::vector<Task*> tasks; 
 	std::unordered_map<std::string, taskID_t> NamesIDsmap;
 
-	void checkTaskID(taskID_t& taskID);
-	taskID_t findTaskIDFromName(std::string& taskName);
-	void addTaskToMap(std::string& taskName);
+	void checkTaskID(const taskID_t& taskID) const;
+	taskID_t findTaskIDFromName(const std::string& taskName) const;
+	void addTaskToMap(const std::string& taskName);
 
 };
 
