@@ -7,17 +7,20 @@
 
 */
 
+#include "TypeDefinitions.h"
 #include "system2.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <iostream>
 
 
 PID_t system2(const char * command)
 {
-    
+    //std::cout << command << "\n";
+
     int p_stdin[2];
     int p_stdout[2];
     PID_t pid;
@@ -57,5 +60,9 @@ PID_t system2(const char * command)
     close(p_stdin[0]);
     close(p_stdout[1]);
 
+    //std::cout << "pid = " << pid << std::endl;
+
     return pid;
 }
+
+

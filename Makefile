@@ -33,4 +33,4 @@ test:
 	$(CC) $(CFLAGS) src/main_tests.cpp -o bin/tests
 
 clean: 
-	rm src/*.o src/AsynchronousTaskManager/*.o $(target)
+	rm src/*.o src/AsynchronousTaskManager/*.o bin/$(target)

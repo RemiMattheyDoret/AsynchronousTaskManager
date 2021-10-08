@@ -41,3 +41,5 @@ Always flush messages
 Allow multiple taskName for pause, stop, resume and status
 
 Test whether COmmand+C lead to deamons
+
+Ensure we can call executable form CLI with --version and --help

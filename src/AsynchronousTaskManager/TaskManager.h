@@ -30,6 +30,7 @@ private:
 
 	void checkTaskID(taskID_t& taskID);
 	taskID_t findTaskIDFromName(std::string& taskName);
+	void addTaskToMap(std::string& taskName);
 
 };
 
