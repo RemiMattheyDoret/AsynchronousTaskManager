@@ -1,16 +1,15 @@
-
 ### Compiler and Flags
-CC := g++
-CFLAGS := -std=c++17 -O0 -Wall -fmax-errors=5
+CC := clang++
+CFLAGS := -std=c++17 -O2 -Wall -lgtest -pthread -I/usr/local/bin/
 
 ### target and objects
-target := callAsynchronousTaskManager
-objs := src/main.o src/AsynchronousTaskManager/AsynchronousTaskManager.o src/AsynchronousTaskManager/Task.o src/AsynchronousTaskManager/TaskManager.o src/AsynchronousTaskManager/TaskCPP.o src/AsynchronousTaskManager/TaskSHELL.o src/AsynchronousTaskManager/PredefinedTasks.o src/AsynchronousTaskManager/system2.o src/AsynchronousTaskManager/ProcessController.o
+target := TaskManager
+mainObj := src/main.o
+libObjs :=  src/TaskManager/src/TaskManager.o src/TaskManager/src/Task.o src/TaskManager/src/TaskCpp.o src/TaskManager/src/TaskShell.o src/TaskManager/src/PredefinedCppTasks.o src/TaskManager/src/CppProcessController.o src/TaskManager/src/system2.o
 
-### Dependencies
-# gcc -c main.c --MMD -MF main.d
-# cat main.d   -> main.o: main.c something.h
-# deps := $(patsubst %.o,%.d,$(objs)) -include $(deps) DEPFLAGS=-MMD -MF $(@:.o=d)
+### Building library
+lib := src/TaskManager/lib/TaskManager.a
+
 
 
 # $@: replace name of target
@@ -20,17 +19,18 @@ objs := src/main.o src/AsynchronousTaskManager/AsynchronousTaskManager.o src/Asy
 
 #all: $(target)
 
-$(target): $(objs)
+$(target): $(mainObj) $(libObjs)
 	$(CC) $(CFLAGS) $^ -o bin/$@ 
 
-#src/main.o: src/main.cpp:
-	#$(CC) $(CFLAGS) -c main.cpp
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
-test: 
-	$(CC) $(CFLAGS) src/main_tests.cpp -o bin/tests
+test: $(lib)
+	$(CC) $(CFLAGS) src/main_tests.cpp $(lib) -o bin/tests
+
+$(lib): $(libObjs)
+	ar rsv $(lib) $(libObjs)
 
 clean: 
-	rm src/*.o src/AsynchronousTaskManager/*.o bin/$(target)
+	rm src/*.o src/TaskManager/src/*.o bin/* $(lib)
