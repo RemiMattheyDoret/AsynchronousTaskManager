@@ -64,26 +64,31 @@ If you just run the executable without arguments (`./TaskManager`), then you wil
 **Start:**
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Starts a new process
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage is 'start <task_type> <task_name> <shell_process or function_name>'. The <task_type> is either 'CPP' or 'SHELL'. The <task_name> is an identifier for the process.made The <task_name> is made of any string of one or more characters excluding spaces and tabs). When the <task_type> is 'CPP', then you need to provide the <function_name> as last argument. the <function_name> is a hard wired function saved in the class *CppProcessController*. When the <task_type> is 'SHELL', then you need to provide the <shell_process> as last argument. The <shell_process> is any process written in Shell.
 
 **status**
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the status of a process that has been started earlier
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There are four possible statuses; running, paused, stopped or completed. Processes that are stopped or completed cannot have a change of status.
 
 **pause**
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pauses a process that has been started earlier
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage is 'pause <task_name>', where <task_name> is the name of a task started earlier. Only running tasks can be paused.
 
 **resume**
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resumes a process that has been paused earlier
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage is 'resume <task_name>', where <task_name> is the name of a task started earlier. Only paused tasks can be resumed.
 
 **stop**
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stops a process that is either running or paused (but not completed or already stopped).
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage is 'resume <task_name>', where <task_name> is the name of a task started earlier.
 
 
