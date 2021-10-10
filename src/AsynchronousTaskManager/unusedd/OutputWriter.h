@@ -1,7 +1,0 @@
-#ifndef OUTPUTWRITER_H
-#define OUTPUTWRITER_H
-
-
-
-
-#endif /* OUTPUTWRITER_H */
