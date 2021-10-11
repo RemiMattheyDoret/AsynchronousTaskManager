@@ -12,7 +12,27 @@ After starting them, tasks can then be paused, resume or stopped at will. TaskMa
 
 Compilation will require C++ (C++17 or higher).
 
-To compile the tests, you will also need gtest (google test). To install gtest, you can do
+To compile the tests, you will also need gtest (google test).
+
+
+**How to install**
+
+Clone the *TaskManager* repository. 
+
+`git clone https://github.com/RemiMattheyDoret/TaskManager`
+
+Change directory to the TaskManager directory.
+
+`cd TaskManager`
+
+Compile the main executable
+
+`make`
+
+The executable is called `TaskManager` should be in `TaskManager/bin/`
+
+
+In order to compile the tests, you will ned googltest. If googltests aer not installed on your machine yet, you can do 
 
 ```
 git clone https://github.com/google/googletest
@@ -23,15 +43,11 @@ cmake ..
 make
 make install
 ```
+To compile the tests, do 
 
+`make test`
 
-**How to install**
-
-Clone the *TaskManager* repository. `cd` to the TaskManager directory.
-
-To compile the main executable, just do `make`. The executable called `TaskManager` should be in `TaskManager/bin/`
-
-To compile the tests, do `make test`. This will also create a static library called `TaskManager.a` in `src/TaskManager/lib/`
+The executable is `test` present at `TaskManager/bin/`. Making tests will also create a static library called `TaskManager.a` in `src/TaskManager/lib/`. Feel free to `install` if you wish.
 
 ## Code Style
 
