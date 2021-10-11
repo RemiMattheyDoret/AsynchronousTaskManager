@@ -18,3 +18,7 @@ Version 0.1.2:
 
 Version 0.2.0:
 	Testing
+
+Version 0.2.2:
+	Improve interface (for when using the librarry from C++, not for when inputting commands from the command line).
+	
