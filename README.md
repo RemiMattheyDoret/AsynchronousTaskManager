@@ -1,7 +1,7 @@
 
 ## TaskManager
 
-TaskManager is a little C++ software package whose purpopse is to simplify the management of asynchronous tasks. There are two types of tasks that can be submitted to a TaskManager object; the name of a predefined function in C++ and a SHELL command line.
+TaskManager is a little C++ software package whose purpopse is to simplify the management of asynchronous tasks. There are two types of tasks that can be submitted to a TaskManager object; a predefined (hard-wired) function in C++ or any SHELL command line.
 
 After starting them, tasks can then be paused, resume or stopped at will. TaskManager also return the status of those tasks.
 
