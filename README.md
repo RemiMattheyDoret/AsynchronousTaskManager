@@ -55,29 +55,29 @@ Coded with rush at night time after work. That's the style!
 
 ## Code organization
 
-**TaskManager**
+<ins>**TaskManager**</ins>
 
 The most important class of the library is *TaskManager*. *TaskManager* reads input from the user through the *submit()* function. The user can either submit the input through a string (as is done when reading directly from the command line) or through and more organized manner (as is done when including the package directly in your C++ code). *TaskManager* parses the input, and instantiate the right *Task* object to initiate the task (aka. the process). *TaskManager* also keep pointers to those tasks in memory along with the task identifier given from the user.
 
 
-**Command**
+<ins>**Command**</ins>
 
 *Command* is a privated nested class of *TaskManager*. *TaskManager* uses a *Command* object to simplify the representation of the user request. *Command* is of POD (Plain Old Data) type.
 
 
-**Task**, **TaskCpp**, and **TaskShell**
+<ins>**Task**, **TaskCpp**, and **TaskShell**</ins>
 
 A user can submit two types of tasks to *TaskManager*; 1) tasks that are predefined in C++ and 2) tasks that aree written in Shell script. For the first and second type of tasks, *TaskManager* creates an instance of class *TaskCpp* and *TaskShell*, respectively. *TaskCpp* and *TaskShell*, both inherit from the abstract class *Task*.
 
 As soon as a *Task* objects is instantiated, the process of interest starts running. The *Task* objects are also responsible for pausing, resuming and stopping the process upon demand from the *TaskManager* (and therefore\e ultimately from the user).
 
 
-**PredefinedCppTask**
+<ins>**PredefinedCppTask**</ins>
 
 Tasks that are predefined in C++ are stored in the class *PredefinedCppTask*. The *TaskManager* calls a static method of *PredefinedCppTask*, give it the name of the function specified by the userr in argument and receives a copy of the function to run. This is then used when instantiating the *TaskCpp*
 
 
-**CppProcessController**
+<ins>**CppProcessController**</ins>
 
 While *TaskShell* objects are able to start, pause, resume, stop and check status of the process on its own, thee *TaskCpp* object needs some help. This help comes from a *CppProcessController* object type. A *TaskShell* submit the process of interest in a seperate thread using a *std::thread* object. A *CppProcessController* is given to the *std::thread* object and is responsible for controlling the process flow (e.g. pause the process when it needs to be paused).
 
