@@ -14,14 +14,15 @@ Compilation will require C++ (C++17 or higher).
 
 To compile the tests, you will also need gtest (google test). To install gtest, you can do
 
-`git clone https://github.com/google/googletest`
-`cd googletest`
-`mkdir build`
-`cd build`
-`cmake ..`
-`make`
-`make install`
-
+```
+git clone https://github.com/google/googletest
+cd googletest
+mkdir build
+cd build
+cmake ..
+make
+make install
+```
 
 
 **How to install**
