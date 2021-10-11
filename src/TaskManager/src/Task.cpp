@@ -8,7 +8,7 @@
 */
 
 unsigned long Task::_currentTaskID = 0; // This thing will be shared among derived class
-const std::array<std::string,4> Task::_TaskStatusNames = {"paused", "running", "stopped", "completed"};
+const std::array<std::string,5> Task::_TaskStatusNames = {"paused", "running", "stopped", "completed", "defaultValue"};
 
 
 
@@ -60,7 +60,7 @@ void Task::stop()
 	_status = stopped;
 }
 
-int Task::status()
+Task::TaskStatus Task::status()
 {
 	//std::cout << "\t" << _TaskStatusNames[_status] << "\n";
 	return _status;

@@ -31,7 +31,7 @@ class TaskCpp : public Task
 		void pause() override;
 		void resume() override;
 		void stop() override;
-		int status() override;
+		Task::TaskStatus status() override;
 		
 
 	private:

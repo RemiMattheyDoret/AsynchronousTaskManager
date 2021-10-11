@@ -118,11 +118,7 @@ void TaskManager::stop(const std::string& taskName)
 
 void TaskManager::status()
 {
-	for (auto& it : NamesIDsmap)
-	{
-    	std::cout << it.first << ":"; // print name
-    	tasks[it.second]->status();    // print status
-    }
+	listTasks();
 }
 
 int TaskManager::status(const taskID_t taskID)
@@ -442,4 +438,22 @@ void TaskManager::printVersion() const
 void TaskManager::printHelp() const
 {
 	std::cout << helpInfo();
+}
+
+void TaskManager::listTasks(Task::TaskStatus status)
+{
+	/*
+		default status is Task::TaskStatus::defaultValue and mean to just list all tasks
+	*/
+
+	for (auto& elem : NamesIDsmap)
+	{
+		Task::TaskStatus elemStatus = tasks[elem.second]->status();
+		auto& elemName = elem.first;
+		if (status == Task::TaskStatus::defaultValue || elemStatus == status)
+		{
+			std::cout << elemName << ":"; // print name
+	    	std::cout << "\t" << Task::_TaskStatusNames[elemStatus] << "\n";  // print status
+		}
+    }	
 }

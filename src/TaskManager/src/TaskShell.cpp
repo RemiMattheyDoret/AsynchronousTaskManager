@@ -78,7 +78,7 @@ void TaskShell::stop()
 }
 
 
-int TaskShell::status()
+Task::TaskStatus TaskShell::status()
 {
 	auto l = lock();
 

@@ -25,7 +25,7 @@ class TaskShell : public Task
 		void pause() override;
 		void resume() override;
 		void stop() override;
-		int status() override;
+		Task::TaskStatus status() override;
 
 	private:
 		bool is_pid_running() const;

@@ -6,6 +6,33 @@ TaskManager is a little C++ software package whose purpopse is to simplify the m
 After starting them, tasks can then be paused, resume or stopped at will. TaskManager also return the status of those tasks.
 
 
+## Installation
+
+**Requirements**
+
+Compilation will require C++ (C++17 or higher).
+
+To compile the tests, you will also need gtest (google test). To install gtest, you can do
+
+`
+git clone https://github.com/google/googletest
+cd googletest
+mkdir build
+cd build
+cmake ..
+make
+make install
+`
+
+
+**How to install**
+
+Clone the *TaskManager* repository. `cd` to the TaskManager directory.
+
+To compile the main executable, just do `make`. The executable called `TaskManager` should be in `TaskManager/bin/`
+
+To compile the tests, do `make test`. This will also create a static library called `TaskManager.a` in `src/TaskManager/lib/`
+
 ## My Motivation
 
 I built it over a few days for a job application.
@@ -63,33 +90,30 @@ If you just run the executable without arguments (`./TaskManager`), then you wil
 
 **Start:**
 
-Starts a new process
-
-Usage is 'start <task_type> <task_name> <shell_process or function_name>'. The <task_type> is either 'CPP' or 'SHELL'. The <task_name> is an identifier for the process.made The <task_name> is made of any string of one or more characters excluding spaces and tabs). When the <task_type> is 'CPP', then you need to provide the <function_name> as last argument. the <function_name> is a hard wired function saved in the class *CppProcessController*. When the <task_type> is 'SHELL', then you need to provide the <shell_process> as last argument. The <shell_process> is any process written in Shell.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Starts a new process
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage is 'start <task_type> <task_name> <shell_process or function_name>'. The <task_type> is either 'CPP' or 'SHELL'. The <task_name> is an identifier for the process.made The <task_name> is made of any string of one or more characters excluding spaces and tabs). When the <task_type> is 'CPP', then you need to provide the <function_name> as last argument. the <function_name> is a hard wired function saved in the class *CppProcessController*. When the <task_type> is 'SHELL', then you need to provide the <shell_process> as last argument. The <shell_process> is any process written in Shell.
 
 **status**
 
-Returns the status of a process that has been started earlier
-
-There are four possible statuses; running, paused, stopped or completed. Processes that are stopped or completed cannot have a change of status.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the status of a process that has been started earlier
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There are four possible statuses; running, paused, stopped or completed. Processes that are stopped or completed cannot have a change of status.
 
 **pause**
 
-Pauses a process that has been started earlier
-
-Usage is 'pause <task_name>', where <task_name> is the name of a task started earlier. Only running tasks can be paused.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pauses a process that has been started earlier
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage is 'pause <task_name>', where <task_name> is the name of a task started earlier. Only running tasks can be paused.
 
 **resume**
 
-Resumes a process that has been paused earlier
-
-Usage is 'resume <task_name>', where <task_name> is the name of a task started earlier. Only paused tasks can be resumed.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Resumes a process that has been paused earlier
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage is 'resume <task_name>', where <task_name> is the name of a task started earlier. Only paused tasks can be resumed.
 
 **stop**
 
-Stops a process that is either running or paused (but not completed or already stopped).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stops a process that is either running or paused (but not completed or already stopped).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage is 'resume <task_name>', where <task_name> is the name of a task started earlier.
 
-Usage is 'resume <task_name>', where <task_name> is the name of a task started earlier.
 
 
+## Screenshot
 

@@ -66,6 +66,7 @@ private:
 	void status();
 	int status(const taskID_t taskID);
 	int status(const std::string& taskName);
+	void listTasks(Task::TaskStatus status = Task::TaskStatus::defaultValue);
 
 	/*
 		Kill all tasks

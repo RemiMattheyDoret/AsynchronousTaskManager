@@ -3,6 +3,7 @@
 
 #include<mutex>
 #include "TypeDefinitions.h"
+#include <array>
 
 
 /*
@@ -12,7 +13,8 @@
 class Task
 {
 	public:
-		enum TaskStatus {paused=0, running=1, stopped=2, completed=3};
+		// Status defaultValue is only used for when we do not want to speceify a status when pasing it to a function
+		enum TaskStatus {paused=0, running=1, stopped=2, completed=3, defaultValue = 4};
 
 
 
@@ -29,13 +31,15 @@ class Task
 		virtual void pause();
 		virtual void resume();
 		virtual void stop();
-		virtual int status();
+		virtual Task::TaskStatus status();
+
+		static const std::array<std::string, 5> _TaskStatusNames;
 
 	protected:		
 		static unsigned long _currentTaskID; // This thing will be shared among derived class
 		TaskStatus _status;
 		const unsigned long _taskID;
-		static const std::array<std::string,4> _TaskStatusNames;
+		
 
 		std::mutex _mu;
 		std::unique_lock<std::mutex> lock();

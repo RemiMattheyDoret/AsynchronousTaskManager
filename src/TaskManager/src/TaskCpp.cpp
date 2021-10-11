@@ -50,7 +50,7 @@ void TaskCpp::stop()
 	_condVar.notify_all();
 }
 
-int TaskCpp::status()
+Task::TaskStatus TaskCpp::status()
 {
 	auto l = lock();
 
