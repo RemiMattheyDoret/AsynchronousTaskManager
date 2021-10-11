@@ -60,11 +60,6 @@ Coded with rush at night time after work. That's the style!
 The most important class of the library is *TaskManager*. *TaskManager* reads input from the user through the *submit()* function. The user can either submit the input through a string (as is done when reading directly from the command line) or through and more organized manner (as is done when including the package directly in your C++ code). *TaskManager* parses the input, and instantiate the right *Task* object to initiate the task (aka. the process). *TaskManager* also keep pointers to those tasks in memory along with the task identifier given from the user.
 
 
-<ins>**Command**</ins>
-
-*Command* is a privated nested class of *TaskManager*. *TaskManager* uses a *Command* object to simplify the representation of the user request. *Command* is of POD (Plain Old Data) type.
-
-
 <ins>**Task**, **TaskCpp**, and **TaskShell**</ins>
 
 A user can submit two types of tasks to *TaskManager*; 1) tasks that are predefined in C++ and 2) tasks that aree written in Shell script. For the first and second type of tasks, *TaskManager* creates an instance of class *TaskCpp* and *TaskShell*, respectively. *TaskCpp* and *TaskShell*, both inherit from the abstract class *Task*.
@@ -72,9 +67,9 @@ A user can submit two types of tasks to *TaskManager*; 1) tasks that are predefi
 As soon as a *Task* objects is instantiated, the process of interest starts running. The *Task* objects are also responsible for pausing, resuming and stopping the process upon demand from the *TaskManager* (and therefore\e ultimately from the user).
 
 
-<ins>**PredefinedCppTask**</ins>
+<ins>**PredefinedCppTasks**</ins>
 
-Tasks that are predefined in C++ are stored in the class *PredefinedCppTask*. The *TaskManager* calls a static method of *PredefinedCppTask*, give it the name of the function specified by the userr in argument and receives a copy of the function to run. This is then used when instantiating the *TaskCpp*
+Tasks that are predefined in C++ are stored in the class *PredefinedCppTasks*. The *TaskManager* calls a static method of *PredefinedCppTasks*, give it the name of the function specified by the userr in argument and receives a copy of the function to run. This is then used when instantiating the *TaskCpp*
 
 
 <ins>**CppProcessController**</ins>
@@ -99,13 +94,34 @@ If you just run the executable without arguments (`./TaskManager`), then you wil
 
 Starts a new process
 
-Usage is 'start <task_type> <task_name> <shell_process or function_name>'. The <task_type> is either 'CPP' or 'SHELL'. The <task_name> is an identifier for the process.made The <task_name> is made of any string of one or more characters excluding spaces and tabs). When the <task_type> is 'CPP', then you need to provide the <function_name> as last argument. the <function_name> is a hard wired function saved in the class *CppProcessController*. When the <task_type> is 'SHELL', then you need to provide the <shell_process> as last argument. The <shell_process> is any process written in Shell.
+Usage is 'start <task_type> <task_name> <process_info>'. The <task_type> is either 'CPP' (or 'cpp') or 'SHELL' (or 'shell'). The <task_name> is an identifier for the process that you can later use to control (pause, resume or stop) the process. The <task_name> is made of any string of one or more characters excluding spaces and tabs). 
+
+When the <task_type> is 'CPP' (or 'cpp'), then you need to provide the *function_name* as <process_info>. The currently predefined function names are:
+	- factorials
+	- doThat
+	- isSoftwareDeveloperAGoodJob
+	- duration_5s
+	- duration_50s
+	- duration_500s
+	- pikachu
+
+You can as well specify an optional *filePath* where the output of the task will be printed. Here is an example
+
+```start cpp mySuperTask pikachu /Users/remi/test/PikaPika.txt```
+
+It is adviced to use an absolute path.
+
+When the <task_type> is 'SHELL', then you need to provide the <shell_process> as last argument. The <shell_process> is any process written in Shell. Here is an example
+
+```start shell I_prefer_Alice cd /Users/remi/test; for f in *.txt; do sed 's/Barbara/Alice/g' $f > tmp && mv tmp $f ;done```
+
+Note that TaskManager only reads one line from the command line. So, if you problem is too complexe, please write it on a file and source the file.
 
 <ins>**status:**</ins>
 
 Returns the status of a process that has been started earlier
 
-Usage is 'status <task_name>'. There are four possible statuses; running, paused, stopped or completed. Processes that are stopped or completed cannot have a change of status. It is also possible to leave the <task_name> empty (just `status`) and TaskManager will print all task names along with their statuses.
+Usage is 'status <task_name>'. There are four possible statuses; running, paused, stopped or completed. Processes that are stopped or completed cannot have a change of status. It is also possible to leave the <task_name> empty (just `status`) and TaskManager will print all task names (in no particular order) along with their statuses.
 
 <ins>**pause:**</ins>
 
