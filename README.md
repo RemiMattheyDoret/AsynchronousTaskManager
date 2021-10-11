@@ -101,25 +101,25 @@ Starts a new process
 
 Usage is 'start <task_type> <task_name> <shell_process or function_name>'. The <task_type> is either 'CPP' or 'SHELL'. The <task_name> is an identifier for the process.made The <task_name> is made of any string of one or more characters excluding spaces and tabs). When the <task_type> is 'CPP', then you need to provide the <function_name> as last argument. the <function_name> is a hard wired function saved in the class *CppProcessController*. When the <task_type> is 'SHELL', then you need to provide the <shell_process> as last argument. The <shell_process> is any process written in Shell.
 
-**status**
+**status:**
 
 Returns the status of a process that has been started earlier
 
 Usage is 'status <task_name>'. There are four possible statuses; running, paused, stopped or completed. Processes that are stopped or completed cannot have a change of status. It is also possible to leave the <task_name> empty (just `status`) and TaskManager will print all task names along with their statuses.
 
-**pause**
+**pause:**
 
 Pauses a process that has been started earlier
 
 Usage is 'pause <task_name>', where <task_name> is the name of a task started earlier. Only running tasks can be paused.
 
-**resume**
+**resume:**
 
 Resumes a process that has been paused earlier
 
 Usage is 'resume <task_name>', where <task_name> is the name of a task started earlier. Only paused tasks can be resumed.
 
-**stop**
+**stop:**
 
 Stops a process that is either running or paused (but not completed or already stopped).
 
