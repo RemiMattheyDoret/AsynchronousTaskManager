@@ -95,37 +95,37 @@ and
 
 If you just run the executable without arguments (`./TaskManager`), then you will be prompted to input commands. There are 5 possible basic commands; `start`, `pause`, `resume`, `stop`, `quit`, and `help`. Here is a description of their usage
 
-<ins>**start:**</ins>ins>
+<ins>**start:**</ins>
 
 Starts a new process
 
 Usage is 'start <task_type> <task_name> <shell_process or function_name>'. The <task_type> is either 'CPP' or 'SHELL'. The <task_name> is an identifier for the process.made The <task_name> is made of any string of one or more characters excluding spaces and tabs). When the <task_type> is 'CPP', then you need to provide the <function_name> as last argument. the <function_name> is a hard wired function saved in the class *CppProcessController*. When the <task_type> is 'SHELL', then you need to provide the <shell_process> as last argument. The <shell_process> is any process written in Shell.
 
-<ins>**status:**</ins>ins>
+<ins>**status:**</ins>
 
 Returns the status of a process that has been started earlier
 
 Usage is 'status <task_name>'. There are four possible statuses; running, paused, stopped or completed. Processes that are stopped or completed cannot have a change of status. It is also possible to leave the <task_name> empty (just `status`) and TaskManager will print all task names along with their statuses.
 
-<ins>**pause:**</ins>ins>
+<ins>**pause:**</ins>
 
 Pauses a process that has been started earlier
 
 Usage is 'pause <task_name>', where <task_name> is the name of a task started earlier. Only running tasks can be paused.
 
-<ins>**resume:**</ins>ins>
+<ins>**resume:**</ins>
 
 Resumes a process that has been paused earlier
 
 Usage is 'resume <task_name>', where <task_name> is the name of a task started earlier. Only paused tasks can be resumed.
 
-<ins>**stop:**</ins>ins>
+<ins>**stop:**</ins>
 
 Stops a process that is either running or paused (but not completed or already stopped).
 
 Usage is 'resume <task_name>', where <task_name> is the name of a task started earlier.
 
-<ins>**help:**</ins>ins>
+<ins>**help:**</ins>
 
 Prints usage information
 
