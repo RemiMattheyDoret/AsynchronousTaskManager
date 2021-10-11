@@ -1,5 +1,5 @@
 ### Compiler and Flags
-CC := clang++
+CC := g++
 CFLAGS := -std=c++17 -O2 -Wall -pthread -I/usr/local/bin/
 CFLAGS_test := -std=c++17 -O2 -Wall -lgtest -pthread -I/usr/local/bin/
 
@@ -10,11 +10,6 @@ libObjs :=  src/TaskManager/src/TaskManager.o src/TaskManager/src/Task.o src/Tas
 
 ### Building library
 lib := src/TaskManager/lib/TaskManager.a
-
-### For install, make sure to set PREFIX if therre is no default
-ifeq ($(PREFIX),)
-    PREFIX := /usr/local
-endif
 
 
 # $@: replace name of target
