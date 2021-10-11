@@ -33,15 +33,6 @@ To compile the main executable, just do `make`. The executable called `TaskManag
 
 To compile the tests, do `make test`. This will also create a static library called `TaskManager.a` in `src/TaskManager/lib/`
 
-## My Motivation
-
-I built it over a few days for a job application.
-
-
-## Tech/Framework used
-
-Plain C++ standard of 2011 minimum and Googltest for unit testing. A little makefile to compile.
-
 ## Code Style
 
 Coded with rush at night time after work. That's the style!
@@ -88,7 +79,7 @@ and
 
 If you just run the executable without arguments (`./TaskManager`), then you will be prompted to input commands. There are 5 possible basic commands; `start`, `pause`, `resume`, `stop`, `quit`, and `help`. Here is a description of their usage
 
-**Start:**
+**start:**
 
 Starts a new process
 
