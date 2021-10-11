@@ -22,3 +22,5 @@ Version 0.2.0:
 Version 0.2.2:
 	Improve interface (for when using the librarry from C++, not for when inputting commands from the command line).
 	
+Version 0.2.3:
+	Removed one of the submit commands
