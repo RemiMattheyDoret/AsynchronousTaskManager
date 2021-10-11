@@ -24,3 +24,10 @@ Version 0.2.2:
 	
 Version 0.2.3:
 	Removed one of the submit commands
+
+Version 1.0.0:
+	Added a few predefined (hard wired) CPP tasks to run
+	Also decided this version was good enough to called 1.0.0
+
+Version 1.0.1:
+	Improved help message and README.md

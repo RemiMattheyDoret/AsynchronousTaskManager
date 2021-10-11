@@ -32,7 +32,7 @@ Compile the main executable
 The executable is called `TaskManager` should be in `TaskManager/bin/`
 
 
-In order to compile the tests, you will ned googltest. If googltests aer not installed on your machine yet, you can do 
+In order to compile the tests, you will need googltest. If googltests are not installed on your machine yet, you can do 
 
 ```
 git clone https://github.com/google/googletest
@@ -43,15 +43,12 @@ cmake ..
 make
 make install
 ```
-To compile the tests, do 
+To compile the tests, then do 
 
 `make test`
 
-The executable is `test` present at `TaskManager/bin/`. Making tests will also create a static library called `TaskManager.a` in `src/TaskManager/lib/`. Feel free to `install` if you wish.
+The executable is `test` present at `TaskManager/bin/`. Making tests will also create a static library called `TaskManager.a` in `src/TaskManager/lib/`. Feel free to `install` it if you wish.
 
-## Code Style
-
-Coded with rush at night time after work. That's the style!
 
 ## Code organization
 
@@ -69,12 +66,12 @@ As soon as a *Task* objects is instantiated, the process of interest starts runn
 
 <ins>**PredefinedCppTasks**</ins>
 
-Tasks that are predefined in C++ are stored in the class *PredefinedCppTasks*. The *TaskManager* calls a static method of *PredefinedCppTasks*, give it the name of the function specified by the userr in argument and receives a copy of the function to run. This is then used when instantiating the *TaskCpp*
+Tasks that are predefined in C++ are stored in the class *PredefinedCppTasks*. The *TaskManager* calls a static method of *PredefinedCppTasks*, give it the name of the function specified by the user in argument and receives a copy of the function to run. This is then used when instantiating the *TaskCpp*
 
 
 <ins>**CppProcessController**</ins>
 
-While *TaskShell* objects are able to start, pause, resume, stop and check status of the process on its own, thee *TaskCpp* object needs some help. This help comes from a *CppProcessController* object type. A *TaskShell* submit the process of interest in a seperate thread using a *std::thread* object. A *CppProcessController* is given to the *std::thread* object and is responsible for controlling the process flow (e.g. pause the process when it needs to be paused).
+While *TaskShell* objects are able to pause, resume, stop and check status of the process on its own, the *TaskCpp* object needs some help. This help comes from a *CppProcessController* object type. A *TaskShell* submit the process of interest in a seperate thread using a *std::thread* object. A *CppProcessController* is given to the *std::thread* object and is responsible for controlling the process flow (e.g. pause the process when it needs to be paused).
 
 ## Usage
 
