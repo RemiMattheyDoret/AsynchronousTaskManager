@@ -71,13 +71,11 @@ Tasks that are predefined in C++ are stored in the class *PredefinedCppTasks*. T
 
 <ins>**CppProcessController**</ins>
 
-While *TaskShell* objects are able to pause, resume, stop and check status of the process on its own, the *TaskCpp* object needs some help. This help comes from a *CppProcessController* object type. A *TaskShell* submit the process of interest in a seperate thread using a *std::thread* object. A *CppProcessController* is given to the *std::thread* object and is responsible for controlling the process flow (e.g. pause the process when it needs to be paused).
+While *TaskShell* objects are able to pause, resume, stop and check status of the process on its own, the *TaskCpp* object needs some help. This help comes from a *CppProcessController* object type. A *TaskShell* starts the process of interest in a seperate thread using a *std::thread* object. A *CppProcessController* is given to the *std::thread* object and is responsible for controlling the process flow (e.g. pause the process when it needs to be paused).
 
 ## Usage
 
-The *TaskManager* library can take task submission either from a set of arguments (handy when calling the *TaskManager* directly from a C++ code) or from a string (handy when submitting tasks from the command line). Below, I am describing the second usage.
-
-The library is here wrapped in a int main() function that will submit tasks from user input through the command line. First when calling, the executable you can print help or the version with the following:
+The *TaskManager* library is meant to either be used through the command line or embedded within you C++ code. I will here only talk about the case when *TaskManager* is used from the command line. In such case, the library *TaskManager* is here wrapped in a int main() function that will submit tasks from user input through the command line. Note that the parsing of the command line is made by the *TaskManager* itself. First when calling, the executable you can print help or the version with the following:
 
 `./TaskManager --help`
 
@@ -91,7 +89,7 @@ If you just run the executable without arguments (`./TaskManager`), then you wil
 
 Starts a new process
 
-Usage is 'start <task_type> <task_name> <process_info>'. The <task_type> is either 'CPP' (or 'cpp') or 'SHELL' (or 'shell'). The <task_name> is an identifier for the process that you can later use to control (pause, resume or stop) the process. The <task_name> is made of any string of one or more characters excluding spaces and tabs). 
+Usage is `start <task_type> <task_name> <process_info>`. The <task_type> is either 'CPP' (or 'cpp') or 'SHELL' (or 'shell'). The <task_name> is an identifier for the process that you can later use to control (pause, resume or stop) the process. The <task_name> is made of any string of one or more characters excluding spaces and tabs). 
 
 When the <task_type> is 'CPP' (or 'cpp'), then you need to provide the *function_name* as <process_info>. The currently predefined function names are:
 	- factorials
@@ -118,25 +116,31 @@ Note that TaskManager only reads one line from the command line. So, if you prob
 
 Returns the status of a process that has been started earlier
 
-Usage is 'status <task_name>'. There are four possible statuses; running, paused, stopped or completed. Processes that are stopped or completed cannot have a change of status. It is also possible to leave the <task_name> empty (just `status`) and TaskManager will print all task names (in no particular order) along with their statuses.
+Usage is `status <task_name>`. There are four possible statuses; running, paused, stopped or completed. Processes that are stopped or completed cannot have a change of status. It is also possible to leave the <task_name> empty (just `status`) and TaskManager will print all task names (in no particular order) along with their statuses.
+
+<ins>**progress:**</ins>
+
+Returns the progress of a process that has been started earlier. This only works for CPP tasks
+
+Usage is `progress <task_name>`. Note that the 'progress' of a task is reported by the running functin itself, whille the status is controlled by the ProcessController. It is therefore not impossible to observe slight mismatches. A function may also decide not to report progress (because that can be a difficult thing to report). In such case, it will print out 'progress undefined'.
 
 <ins>**pause:**</ins>
 
 Pauses a process that has been started earlier
 
-Usage is 'pause <task_name>', where <task_name> is the name of a task started earlier. Only running tasks can be paused.
+Usage is `pause <task_name>`, where <task_name> is the name of a task started earlier. Only running tasks can be paused.
 
 <ins>**resume:**</ins>
 
 Resumes a process that has been paused earlier
 
-Usage is 'resume <task_name>', where <task_name> is the name of a task started earlier. Only paused tasks can be resumed.
+Usage is `resume <task_name>`, where <task_name> is the name of a task started earlier. Only paused tasks can be resumed.
 
 <ins>**stop:**</ins>
 
 Stops a process that is either running or paused (but not completed or already stopped).
 
-Usage is 'resume <task_name>', where <task_name> is the name of a task started earlier.
+Usage is `resume <task_name>`, where <task_name> is the name of a task started earlier.
 
 <ins>**help:**</ins>
 
