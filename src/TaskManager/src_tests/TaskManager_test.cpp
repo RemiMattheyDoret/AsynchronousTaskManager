@@ -50,7 +50,7 @@ TEST_P(TaskManagerTester, testSubmitSringCommands)
 		try
 		{
 			// 'EXPECT_EQ' runs only if 'submit' did not throw an exception
-			EXPECT_EQ(tm.submit(as->_commands[i]), as->_expectedReturns[i]); 
+			EXPECT_EQ(tm.submit(as->_commands[i], true), as->_expectedReturns[i]); 
 
 			// 'ASSERT_FALSE' runs only if 'submit' did not throw an exception
 			ASSERT_FALSE(as->_isExpectedExceptions[i]); 

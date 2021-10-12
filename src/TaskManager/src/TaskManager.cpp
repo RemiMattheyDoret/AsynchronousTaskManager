@@ -65,13 +65,13 @@ void TaskManager::addTaskToMap(const std::string& taskName)
 		
 }
 
-void TaskManager::startSHELL(const std::string& process, const std::string& taskName)
+void TaskManager::startShell(const std::string& taskName, const std::string& process)
 {
 	addTaskToMap(taskName);
 	tasks.push_back(new TaskShell(process));
 }
 
-void TaskManager::startCPP(const std::string& functionName, const std::string& taskName)
+void TaskManager::startCpp(const std::string& taskName, const std::string& functionName, const std::string& filePath)
 {	
 	/*
 		Note that the ordering of the three statements here matter.
@@ -79,7 +79,7 @@ void TaskManager::startCPP(const std::string& functionName, const std::string& t
 
 	const auto fct = PredefinedCppTasks::get_fct_from_fctName(functionName);
 	addTaskToMap(taskName);
-	tasks.push_back(new TaskCpp(fct));
+	tasks.push_back(new TaskCpp(fct, filePath));
 }
 
 
@@ -105,6 +105,17 @@ void TaskManager::resume(const std::string& taskName)
 	resume(findTaskIDFromName(taskName));
 }
 
+double TaskManager::progress(const std::string& taskName)
+{
+	return progress(findTaskIDFromName(taskName));
+}
+
+double TaskManager::progress(const taskID_t taskID)
+{
+	checkTaskID(taskID);
+	return tasks[taskID]->progress();
+}
+
 void TaskManager::stop(const taskID_t taskID)
 {
 	checkTaskID(taskID);
@@ -121,13 +132,13 @@ std::vector<std::pair<std::string, Task::TaskStatus>> TaskManager::status()
 	return listTasks();
 }
 
-int TaskManager::status(const taskID_t taskID)
+Task::TaskStatus TaskManager::status(const taskID_t taskID)
 {
 	checkTaskID(taskID);
 	return tasks[taskID]->status();
 }
 
-int TaskManager::status(const std::string& taskName)
+Task::TaskStatus TaskManager::status(const std::string& taskName)
 {
 	return status(findTaskIDFromName(taskName));
 }
@@ -142,7 +153,7 @@ void TaskManager::checkTaskID(const taskID_t& taskID) const
 
 
 
-int TaskManager::submit(const std::string& input)
+int TaskManager::submit(const std::string& input, bool isSilent)
 {
 	//// prepare the stream
 	std::istringstream iss(input);
@@ -180,6 +191,9 @@ int TaskManager::submit(const std::string& input)
 			if (!(iss >> process))
 				throw incorrectFormatMessage() + startUsage();
 
+			std::string filePath;
+			iss >> filePath;  // User is allowed to not specify a filePath
+
 
 			// Test everything was read
 			std::string testEmpty;
@@ -187,25 +201,18 @@ int TaskManager::submit(const std::string& input)
 				throw incorrectFormatMessage() + startUsage();
 			
 
-			return submit(
-				BaseCommand::START,   // baseCommand
-				TaskType::CPP,  	  // taskType
-				taskName,             // taskName
-				process               // process
-			);
+			startCpp(taskName, process, filePath);
+			return -1;
 			
 		} else
 		{
+			assert(taskType == "SHELL" || taskType == "shell");
+
 			std::string process;
 			getline(iss, process); // Take whatever is left
 
-
-			return submit(
-				BaseCommand::START,   	// baseCommand
-				TaskType::SHELL,  		// taskType
-				taskName,              	// taskName
-				process                 // task
-			);
+			startShell(taskName, process);
+			return -1;
 		}
 			
 	} else if (basic_command == "pause")
@@ -221,12 +228,8 @@ int TaskManager::submit(const std::string& input)
 		if (iss >> testEmpty)
 			throw incorrectFormatMessage() + pauseUsage();
 
-		return submit(
-			BaseCommand::PAUSE,		// baseCommand
-			TaskType::UNKNOWN,  	// taskType
-			taskName,               // taskName
-			""                      // process
-		);
+		pause(taskName);
+		return -1;
 
 	} else if (basic_command == "resume")
 	{
@@ -240,12 +243,9 @@ int TaskManager::submit(const std::string& input)
 		if (iss >> testEmpty)
 			throw incorrectFormatMessage() + resumeUsage();
 		
-		return submit(
-			BaseCommand::RESUME,  	// baseCommand
-			TaskType::UNKNOWN,  	// taskType
-			taskName,               // taskName
-			""                      // process
-		);
+		resume(taskName);
+		return -1;
+		
 	}  else if (basic_command == "status")
 	{
 		// command casual name
@@ -257,12 +257,32 @@ int TaskManager::submit(const std::string& input)
 		if (iss >> testEmpty)
 			throw incorrectFormatMessage() + statusUsage();
 		
-		return submit(
-			BaseCommand::STATUS,  	// baseCommand
-			TaskType::UNKNOWN,  	// taskType
-			taskName,               // taskName
-			""                      // process
-		);
+		if (taskName == "")
+		{
+			std::vector<std::pair<std::string, Task::TaskStatus>> statuses = status();
+			
+			if (!isSilent)
+			{
+				// print statuses
+				for (auto& elem : statuses)
+				{
+					// print name
+					std::cout << elem.first << ":";
+
+					// print status
+					printStatus(elem.second);
+			    }
+			}
+
+		    return -1;
+
+		} else
+		{
+			Task::TaskStatus statusValue = status(taskName);
+			if (!isSilent) printStatus(statusValue);
+			return statusValue;
+		}
+		
 	} else if (basic_command == "stop")
 	{
 		
@@ -276,12 +296,8 @@ int TaskManager::submit(const std::string& input)
 		if (iss >> testEmpty)
 			throw incorrectFormatMessage() + stopUsage();
 
-		return submit(
-			BaseCommand::STOP,		// baseCommand
-			TaskType::UNKNOWN,  	// taskType
-			taskName,               // taskName
-			""                      // process
-		);
+		stop(taskName);
+		return -1;
 	} else if (basic_command == "quit")
 	{
 		// Test everything was read
@@ -289,12 +305,33 @@ int TaskManager::submit(const std::string& input)
 		if (iss >> testEmpty)
 			throw incorrectFormatMessage() + quitUsage();
 
-		return submit(
-			BaseCommand::QUIT,		// baseCommand
-			TaskType::UNKNOWN,		// taskType
-			"",               		// taskName
-			""                    	// task
-		);
+		quit();
+		return -1;
+
+	} else if (basic_command == "progress")
+	{
+		// command casual name
+		std::string taskName;
+		if (!(iss >> taskName))
+			throw incorrectFormatMessage() + progressUsage();
+
+		// Test everything was read
+		std::string testEmpty;
+		if (iss >> testEmpty)
+			throw incorrectFormatMessage() + progressUsage();
+
+		auto progressValue = progress(taskName);
+		
+		if (!isSilent)
+		{
+			if (progressValue < 0) // This is in case we want to implement a CPP task that does not (cannot?) report its progress
+				std::cout << "No valid progress to report" << std::endl;  
+			else
+				std::cout << progressValue * 100 << "%" << std::endl;
+		}
+			
+		return -1;
+
 	} else if (basic_command == "help")
 	{
 		throw helpInfo(); // Not really an exception per say but that's ok.
@@ -305,66 +342,34 @@ int TaskManager::submit(const std::string& input)
 }
 
 
-
-int TaskManager::submit(
-	const BaseCommand baseCommand,  // start, resume, pause, stop, quit
-	const TaskType taskType,  	   	// CPP or SHELL
-	const std::string& taskName,    // Casual name to refer to this task
-	const std::string& process     	// Name of CPP function or full Shell process
-)
+void TaskManager::printStatus(Task::TaskStatus status)
 {
-	int varToReturn = -1; // Only used with status for a single task name
-
-	switch(baseCommand)
+	switch (status)
 	{
-		case BaseCommand::START:
-			if (taskType == TaskType::CPP)
-			{
-				startCPP(process, taskName);
-			}
-			else
-			{
-				assert(taskType == TaskType::SHELL);
-				startSHELL(process, taskName);
-			}
+		case Task::TaskStatus::paused:
+			std::cout << "\tpaused" << std::endl;
 			break;
-
-		case BaseCommand::PAUSE:
-			pause(taskName);
+		case Task::TaskStatus::running:
+			std::cout << "\trunning" << std::endl;
 			break;
-
-		case BaseCommand::RESUME:
-			resume(taskName);
+		case Task::TaskStatus::stopped:
+			std::cout << "\tstopped" << std::endl;
 			break;
-
-		case BaseCommand::STOP:
-			stop(taskName);
+		case Task::TaskStatus::completed:
+			std::cout << "\tcompleted" << std::endl;
 			break;
-
-		case BaseCommand::QUIT:
-			killAllTasks();
-			_hasquitted = true;
-			break;
-
-		case BaseCommand::STATUS:
-			if (taskName == "")
-				(void) status();
-			else
-				varToReturn = status(taskName);
-			break;
-
-		case BaseCommand::HELP:
-			throw helpInfo();
-			break;	
-
 		default:
-			throw helpInfo();			
-			break; // Not necessary break statement.	
+			std::cout << "\tundefined status" << std::endl;
+			break;
 	}
-
-	return varToReturn;
 }
 
+
+void TaskManager::quit()
+{
+	killAllTasks();
+	_hasquitted = true;
+}
 
 
 std::string TaskManager::incorrectFormatMessage() const
@@ -375,38 +380,44 @@ std::string TaskManager::incorrectFormatMessage() const
 
 std::string TaskManager::startUsage() const
 {
-	return "Start:\tUsage is 'start <task_type> <task_name> <shell process or functionName>'. The <task_type> is either 'CPP' (or 'cpp') or 'SHELL' (or 'shell').\n\n";
+	return "Start:\tStarts a new process. Usage is 'start <task_type> <task_name> <shell process or functionName and filePath>'. The <task_type> is either 'CPP' (or 'cpp') or 'SHELL' (or 'shell'). For examples: 'start cpp myTask pikachu /Users/remi/test/PikaPika.txt' or 'start shell myOtherTask sleep 10s; echo \"it was a good nap\" >> /Users/remi/test/napFile.txt'\n\n";
 }
 
 std::string TaskManager::pauseUsage() const
 {
-	return "Pause:\tUsage is 'pause <task_name>'.\n\n";
+	return "Pause:\tPauses a task. Usage is 'pause <task_name>'.\n\n";
 }
 
 std::string TaskManager::statusUsage() const
 {
-	return "Status:\tUsage is 'status <task_name>'. The <task_name> is here optional. In absence of task_name, the status of all classes will be listed\n\n";
+	return "Status:\tChecks status of a task. Usage is 'status <task_name>'. The <task_name> is here optional. In absence of task_name, the status of all classes will be listed\n\n";
+}
+
+std::string TaskManager::progressUsage() const
+{
+	return "Progress:\tChecks progress of a task. Usage is 'progress <task_name>'. Progress only works for CPP tasks.\n\n";
 }
 
 
 std::string TaskManager::stopUsage() const
 {
-	return "Stop:\tUsage is 'stop <task_name>'.\n\n";
-}
-
-std::string TaskManager::quitUsage() const
-{
-	return "Quit:\tUsage is just 'quit', with nothing afterward.\n\n"; // This command quits the application and kill all tasks in doing so. When receiving a SIGINT, the application also kill all processes before quiting. Hence, doing 'command + c' or 'control + c' should be equivalent to typing 'quit'
+	return "Stop:\tStops a task. Usage is 'stop <task_name>'.\n\n";
 }
 
 std::string TaskManager::resumeUsage() const
 {
-	return "Resume:\tUsage is 'resume <task_name>'.\n\n";
+	return "Resume:\tResumes a task. Usage is 'resume <task_name>'.\n\n";
 }
+
+std::string TaskManager::quitUsage() const
+{
+	return "Quit:\tQuits application. Usage is just 'quit', with nothing afterward.\n\n"; // This command quits the application and kill all tasks in doing so. When receiving a SIGINT, the application also kill all processes before quiting. Hence, doing 'command + c' or 'control + c' should be equivalent to typing 'quit'
+}
+
 
 std::string TaskManager::helpInfo() const
 {
-	return  std::string("\n\n") + std::string("TaskManager is a little tool to manage tasks that are either hard wired in C++ (see the files PredefinedCppTasks.h, PredefinedCppTasks.cpp) or that are expressed directly in Shell script. When starting a task (with C++ hard wired task or a shell task), you need to name it. Then, you can inquire the status of the task and you can chose to pause the task, resume it or stop it at wish.\n\n") + startUsage() + pauseUsage() + stopUsage() + quitUsage() + resumeUsage() + "Note that TaskManager is also a library that can be used from your C++ code and it then can read commands in a format that is more computer friendly than a string. I am however too tired to explain that now! Sweet dreams!\n\n";
+	return  std::string("\n\n") + std::string("TaskManager is a little tool to manage tasks that are either hard wired in C++ (see the files PredefinedCppTasks.h, PredefinedCppTasks.cpp) or that are expressed directly in Shell script. When starting a task (with C++ hard wired task or a shell task), you need to name it. Then, you can inquire the status of the task and you can chose to pause the task, resume it or stop it at wish.\n\n") + startUsage() + statusUsage() + pauseUsage() + stopUsage() + resumeUsage() + quitUsage() + "\n\nFor more information, please consult the README.md.\n\n";
 }
 
 bool TaskManager::hasQuitted() const
@@ -455,8 +466,8 @@ std::vector<std::pair<std::string, Task::TaskStatus>> TaskManager::listTasks(Tas
 		auto& elemName = elem.first;
 		if (status == Task::TaskStatus::defaultValue || elemStatus == status)
 		{
-			std::cout << elemName << ":"; // print name
-	    	std::cout << "\t" << Task::_TaskStatusNames[elemStatus] << "\n";  // print status
+			//std::cout << elemName << ":"; // print name
+	    	//std::cout << "\t" << Task::_TaskStatusNames[elemStatus] << "\n";  // print status
 
 	    	r.push_back({elemName, elemStatus});
 		}

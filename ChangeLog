@@ -31,3 +31,7 @@ Version 1.0.0:
 
 Version 1.0.1:
 	Improved help message and README.md
+
+Version 1.0.2:
+	Implement 'progress'
+	Make sure the TaskManager manages itself the printing of the output

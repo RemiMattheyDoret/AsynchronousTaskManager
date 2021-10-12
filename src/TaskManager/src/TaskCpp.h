@@ -19,7 +19,7 @@ class TaskCpp : public Task
 	*/
 
 	public:
-		TaskCpp(const function_t fct);
+		TaskCpp(const function_t fct, const std::string& filePath);
 		~TaskCpp();
 
 		/*
@@ -32,12 +32,15 @@ class TaskCpp : public Task
 		void resume() override;
 		void stop() override;
 		Task::TaskStatus status() override;
+
+		double progress() override;
 		
 
 	private:
 
 		std::condition_variable _condVar;
 		std::future<bool> _future;
+		double _progress;
 };
 
 

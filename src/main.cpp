@@ -68,44 +68,12 @@ int main(int argc, char *argv[])
 
 			/*
 				Submit command line to atm
-				If you asked for _status then, the return valule is the status which you can compare the #defined PAUSED RUNNING STOPPED COMPLETED.
-				For this example, I just let atm prints out the _status in a nice format.
+				The 'submit' method directly prints out information
+				The only thing I decided it would not deal with itself are exceptions. Hence the try catch block
+				'submit' also report some information in case the main wanted to further process that information. Here we will just ignore it, hence the '(void)'
 			*/
 
-			auto value = tm.submit(input);
-
-
-			switch (value)
-			{
-				case Task::TaskStatus::paused:
-					std::cout << "\tpaused\n";
-					break;
-				case Task::TaskStatus::running:
-					std::cout << "\trunning\n";
-					break;
-				case Task::TaskStatus::stopped:
-					std::cout << "\tstopped\n";
-					break;
-				case Task::TaskStatus::completed:
-					std::cout << "\tcompleted\n";
-					break;
-			}
-
-			/*
-				Note that there are two ways to submit something to the TaskManager. Here is an example
-
-					submit("start SHELL myShellTask sleep 10s")
-
-				is equivalent to
-
-					submit(
-						TaskManager::BaseCommand::START,
-						TaskManager::TaskType::SHELL,
-						"myShellTask",
-						"sleep 10s"
-					)
-			*/
-
+			(void) tm.submit(input);
 		}
 
 		/*

@@ -12,7 +12,7 @@ TEST(TaskCpp, testStatus_A)
 	*/
 
 	// initialize and make sure it runs
-	TaskCpp task(fct);
+	TaskCpp task(fct, ""); // empty string for filepath. It does not matter where it writes
 	EXPECT_EQ(task.status(), Task::TaskStatus::running);
 
 	// Pause and ensure it has paused and then wait
@@ -57,7 +57,7 @@ TEST(TaskCpp, testStatus_B)
 	*/
 
 	// initialize and make sure it runs
-	TaskCpp task(fct);
+	TaskCpp task(fct, ""); // empty string for filepath. It does not matter where it writes
 	EXPECT_EQ(task.status(), Task::TaskStatus::running);
 
 

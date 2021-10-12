@@ -31,6 +31,7 @@ class Task
 		virtual void pause();
 		virtual void resume();
 		virtual void stop();
+		virtual double progress() = 0;
 		virtual Task::TaskStatus status();
 
 		static const std::array<std::string, 5> _TaskStatusNames;

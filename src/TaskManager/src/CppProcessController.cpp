@@ -1,14 +1,19 @@
 #include "CppProcessController.h"
 #include <iostream>
 
-CppProcessController::CppProcessController(std::condition_variable& condVar, std::mutex& mu, Task::TaskStatus* statusP)
-	:_condVar(condVar), _mu(mu), _statusP(statusP)
-	{}
+CppProcessController::CppProcessController(std::condition_variable& condVar, std::mutex& mu, Task::TaskStatus* statusP, double* progressP)
+	:_condVar(condVar), _mu(mu), _statusP(statusP), _progressP(progressP)
+	{
+		auto l = std::unique_lock<std::mutex>(_mu);
+		setProgress(0.0);
+	}
 
 
-bool CppProcessController::pause_and_shouldStop()
+bool CppProcessController::pause_and_shouldStop(double progress)
 {
 	auto l = std::unique_lock<std::mutex>(_mu);
+
+	setProgress(progress);
 
 	_condVar.wait(
 		l,
@@ -19,6 +24,18 @@ bool CppProcessController::pause_and_shouldStop()
 		return true;
 	else
 		return false;
+}
+
+double CppProcessController::getProgress()
+{
+	auto l = std::unique_lock<std::mutex>(_mu);
+	return *_progressP;
+}
+
+void CppProcessController::setProgress(double progress)
+{
+	// When this function is used, the mutex has already been locked
+	*_progressP = progress;
 }
 
 

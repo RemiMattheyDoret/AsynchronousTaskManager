@@ -94,6 +94,11 @@ Task::TaskStatus TaskShell::status()
 	return Task::status();
 }
 
+double TaskShell::progress()
+{
+	throw "A shell task cannot track progress\n";
+}
+
 
 TaskShell::~TaskShell()
 {

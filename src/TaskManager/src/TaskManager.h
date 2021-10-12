@@ -23,14 +23,7 @@ public:
 		int 'submit(const std::string& input);' is actually parsing the input and resubmitting it to the other 'submit' method. This causes unnecessary case switch statements but it felt safer that wether the user uses one or the other 'submit' command, then in all cases, it will go through the same submission process after eventual parsing.
 	*/
 
-	int submit(const std::string& input);
-
-	int submit(
-		const BaseCommand baseCommand,  // start, resume, pause, stop, quit
-		const TaskType taskType,  	   	// CPP or SHELL
-		const std::string& taskName,    // Casual name to refer to this task
-		const std::string& process     	// Name of CPP function or full Shell process
-	);
+	int submit(const std::string& input, bool isSilent = false);
 
 	void printLogo() const;
 	void printVersion() const;
@@ -39,8 +32,8 @@ public:
 
 
 
-	void startSHELL(const std::string& process, const std::string& taskName);
-	void startCPP(const std::string& functionName, const std::string& taskName);
+	void startShell(const std::string& taskName, const std::string& process);
+	void startCpp(const std::string& taskName, const std::string& functionName, const std::string& filePath);
 	void pause(const taskID_t taskID);
 	void pause(const std::string& taskName);
 	void resume(const taskID_t taskID);
@@ -48,9 +41,12 @@ public:
 	void stop(const taskID_t taskID);
 	void stop(const std::string& taskName);
 	std::vector<std::pair<std::string, Task::TaskStatus>> status();
-	int status(const taskID_t taskID);
-	int status(const std::string& taskName);
+	Task::TaskStatus status(const taskID_t taskID);
+	Task::TaskStatus status(const std::string& taskName);
 	std::vector<std::pair<std::string, Task::TaskStatus>> listTasks(Task::TaskStatus status = Task::TaskStatus::defaultValue);
+	double progress(const std::string& taskName);
+	double progress(const taskID_t taskID);
+	void quit();
 
 private:
 	struct Command;	
@@ -62,7 +58,7 @@ private:
 	std::vector<Task*> tasks; 
 	std::unordered_map<std::string, taskID_t> NamesIDsmap;
 	bool _hasquitted;
-	std::string _version = "version 0.2.2";
+	std::string _version = "version 1.0.2";
 
 
 	
@@ -84,6 +80,7 @@ private:
 	std::string quitUsage() const;
 	std::string resumeUsage() const;
 	std::string statusUsage() const;
+	std::string progressUsage() const;
 
 	/*
 		Functions to ensure we keep a good track of processes
@@ -93,25 +90,14 @@ private:
 	taskID_t findTaskIDFromName(const std::string& taskName) const;
 	void addTaskToMap(const std::string& taskName);
 
+	/*
+		Function that help print in submit
+	*/
+
+	void printStatus(Task::TaskStatus status);
+
 };
 
-
-/*
-	Private nested class 'Command'
-*/
-
-struct Command
-{
-	enum BaseCommand {start, pause, resume, stop, status, quit, help};
-	enum TaskType {CPP, SHELL, UNKNOWN};
-	
-	BaseCommand _baseCommand;
-	TaskType _taskType;
-	std::string _taskName;
-	std::string _process;
-
-	//taskID_t taskID;
-};
 
 
 #endif /* TASKMANAGER_H */

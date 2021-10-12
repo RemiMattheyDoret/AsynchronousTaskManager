@@ -14,4 +14,4 @@ using taskID_t = long int;
 
 // Types of functions that are hard wired (for CPPTask)
 class CppProcessController; // forward declaration
-using function_t = std::function<void(CppProcessController&&)>;
+using function_t = std::function<void(CppProcessController&&, const std::string&)>;

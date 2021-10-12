@@ -10,15 +10,17 @@
 class CppProcessController
 {
 public:
-	CppProcessController(std::condition_variable& condVar, std::mutex& mu, Task::TaskStatus* statusP);
+	CppProcessController(std::condition_variable& condVar, std::mutex& mu, Task::TaskStatus* statusP, double* progressP);
 
-	bool pause_and_shouldStop();
-	//bool shouldPause();
+	bool pause_and_shouldStop(double progress = -1.0);
+	void setProgress(double progress);
+	double getProgress();
 	
 private:
 	std::condition_variable& _condVar;
 	std::mutex& _mu;
 	Task::TaskStatus* _statusP;
+	double* _progressP;
 };
 
 #endif /* CppProcessController_H */

@@ -17,11 +17,14 @@ TEST(CppProcessController, testResponseToStatues)
 	std::mutex mu;
 	Task::TaskStatus* statusP = new Task::TaskStatus();
 	*statusP = Task::TaskStatus::running;
+	double* progressP = new double();
+	*progressP = -1.0;
 
 	CppProcessController PC(
 		condVar,
 		mu,
-		statusP
+		statusP,
+		progressP
 	);
 
 	// Running
@@ -40,5 +43,8 @@ TEST(CppProcessController, testResponseToStatues)
 		condVar.notify_all();
 	}
 	ASSERT_TRUE(PC.pause_and_shouldStop());
+
+	delete statusP;
+	delete progressP;
 }
 
