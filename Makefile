@@ -9,6 +9,7 @@ mainObj := src/main.o
 libObjs :=  src/TaskManager/src/TaskManager.o src/TaskManager/src/Task.o src/TaskManager/src/TaskCpp.o src/TaskManager/src/TaskShell.o src/TaskManager/src/PredefinedCppTasks.o src/TaskManager/src/CppProcessController.o src/TaskManager/src/system2.o
 
 ### Building library
+libDir := src/TaskManager/lib/
 lib := src/TaskManager/lib/TaskManager.a
 
 
@@ -29,11 +30,9 @@ $(target): $(mainObj) $(libObjs)
 test: $(lib)
 	$(CC) $(CFLAGS_test) src/main_tests.cpp $(lib) -o bin/tests
 
-install: $(lib)
-	install  $(lib) $(PREFIX)/lib/
-	install  src/TaskManager/src/TaskManager.h $(PREFIX)/include/
 
 $(lib): $(libObjs)
+	mkdir $(libDir)
 	ar rsv $(lib) $(libObjs)
 
 
