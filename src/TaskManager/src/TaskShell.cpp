@@ -96,7 +96,7 @@ Task::TaskStatus TaskShell::status()
 
 double TaskShell::progress()
 {
-	throw "A shell task cannot track progress\n";
+	throw std::string("A shell task cannot track progress\n");
 }
 
 
