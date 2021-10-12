@@ -58,7 +58,7 @@ private:
 	std::vector<Task*> tasks; 
 	std::unordered_map<std::string, taskID_t> NamesIDsmap;
 	bool _hasquitted;
-	std::string _version = "version 1.0.6";
+	std::string _version = "version 1.0.7";
 
 
 	
