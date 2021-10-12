@@ -35,3 +35,6 @@ Version 1.0.1:
 Version 1.0.2:
 	Implement 'progress'
 	Make sure the TaskManager manages itself the printing of the output
+
+Version 1.0.3:
+	Better commenting
