@@ -38,3 +38,6 @@ Version 1.0.2:
 
 Version 1.0.3:
 	Better commenting
+
+Version 1.0.7:
+	Change makefile to use GCC by default and not CLANG
