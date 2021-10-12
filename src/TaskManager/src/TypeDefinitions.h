@@ -1,4 +1,5 @@
 #include <functional>
+#include <string>
 
 // Type of PID (Process IDentifier in the system)
 using PID_t = int;
