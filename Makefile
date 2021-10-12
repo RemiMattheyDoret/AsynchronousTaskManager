@@ -21,6 +21,7 @@ lib := src/TaskManager/lib/TaskManager.a
 #all: $(target)
 
 $(target): $(mainObj) $(libObjs)
+	mkdir -p bin
 	$(CC) $(CFLAGS) $^ -o bin/$@ 
 
 
@@ -28,11 +29,12 @@ $(target): $(mainObj) $(libObjs)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 test: $(lib)
+	mkdir -p bin
 	$(CC) $(CFLAGS_test) src/main_tests.cpp $(lib) -o bin/tests
 
 
 $(lib): $(libObjs)
-	mkdir $(libDir)
+	mkdir -p $(libDir)
 	ar rsv $(lib) $(libObjs)
 
 
