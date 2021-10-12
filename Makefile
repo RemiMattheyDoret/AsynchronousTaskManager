@@ -1,5 +1,5 @@
 ### Compiler and Flags
-CC := clang++
+CC := g++
 CFLAGS := -std=c++17 -O2 -Wall -pthread -I/usr/local/bin/ 
 CFLAGS_test := -std=c++17 -O2 -Wall -lgtest -pthread -I/usr/local/bin/  
 
